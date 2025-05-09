@@ -1,0 +1,7 @@
+title: Think Responsibly Show
+description: Empowering informed citizens through media literacy and civic engagement.
+baseurl: "" # Use "/thinkresponsiblyshow" if not using custom domain
+url: "https://thinkresponsiblyshow.com"
+theme: minima # Optional, but we’ll override with custom styles
+plugins:
+  - jekyll-feed
