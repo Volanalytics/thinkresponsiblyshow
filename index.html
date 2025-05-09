@@ -4,19 +4,158 @@ title: Think Responsibly Show
 description: Empowering informed citizens through media literacy and civic engagement.
 ---
 <section class="hero">
-    <h1>Welcome to Think Responsibly Show</h1>
-    <p>Empowering informed citizens with news analysis, media literacy, and civic resources.</p>
-    <form id="email-form">
-        <input type="email" id="email" placeholder="Enter your email" required>
-        <button type="submit">Join Our Community</button>
-    </form>
+    <div class="container">
+        <h1>Welcome to Think Responsibly Show</h1>
+        <p>Empowering informed citizens with news analysis, media literacy, and civic resources in an age of information overload.</p>
+        <form id="email-form" class="email-signup">
+            <input type="email" id="email" placeholder="Enter your email address" required>
+            <button type="submit" class="btn">Join Our Community</button>
+        </form>
+        <p class="form-note">Get weekly resources, analysis, and updates directly to your inbox.</p>
+    </div>
 </section>
+
+<section class="featured">
+    <div class="container">
+        <h2>Latest Resources</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>Media Literacy Guide</h3>
+                <p>Our comprehensive guide to evaluating information sources and recognizing manipulation techniques.</p>
+                <a href="{{ site.baseurl }}/resources/media-literacy-toolkit" class="feature-link">Learn More</a>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🗳️</div>
+                <h3>2025 Voter Guide</h3>
+                <p>Everything you need to know about upcoming elections, registration deadlines, and candidate information.</p>
+                <a href="{{ site.baseurl }}/resources/voter-guide-2025" class="feature-link">View Guide</a>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎙️</div>
+                <h3>Podcast Coming Soon</h3>
+                <p>Join us for thoughtful discussions on media literacy and civic engagement with expert guests.</p>
+                <a href="{{ site.baseurl }}/podcast" class="feature-link">Get Notified</a>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="about">
-    <h2>About Romonte</h2>
-    <p>Romonte O. Hamer created *Think Responsibly Show* to guide citizens in critically evaluating information and engaging in civic life.</p>
+    <div class="container">
+        <h2>About Romonte</h2>
+        <div class="about-bio">
+            <div class="about-image">
+                <!-- Replace with actual photo when available -->
+                <img src="{{ site.baseurl }}/images/thinkresponsiblyshowmast.png" alt="Romonte O. Hamer">
+            </div>
+            <div class="about-text">
+                <p>Romonte O. Hamer created <em>Think Responsibly Show</em> to guide citizens in critically evaluating information and engaging in civic life. With a background in media studies and civic education, Romonte is passionate about fostering a more informed and engaged citizenry.</p>
+                <p>Through the Think Responsibly Show, Romonte provides tools, resources, and analysis to help people navigate today's complex information environment and participate meaningfully in democratic processes.</p>
+                <a href="{{ site.baseurl }}/about" class="btn">Learn More About Our Mission</a>
+            </div>
+        </div>
+    </div>
 </section>
-<!-- TNAdLink.com Banner Ad -->
-<div class="ad-banner">
-    <!-- Replace with TNAdLink.com ad script -->
-    <script async src="https://tnadlink.com/ad-script.js"></script>
-</div>
+
+<section class="latest-blog">
+    <div class="container">
+        <h2>From Our Blog</h2>
+        <div class="blog-preview">
+            {% for post in site.posts limit:1 %}
+            <article class="featured-post">
+                <h3><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h3>
+                <p class="meta">Posted on {{ post.date | date: "%B %d, %Y" }}</p>
+                <p class="excerpt">{{ post.excerpt }}</p>
+                <a href="{{ site.baseurl }}{{ post.url }}" class="btn">Read Full Article</a>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="blog-more">
+            <a href="{{ site.baseurl }}/blog" class="more-link">Browse All Articles →</a>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Additional Home Page Styles */
+.hero {
+    text-align: center;
+    padding: 4rem 1rem;
+    background-color: var(--primary-light);
+}
+
+.form-note {
+    font-size: 0.9rem;
+    color: var(--gray-dark);
+    margin-top: 1rem;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-link {
+    display: inline-block;
+    margin-top: 1rem;
+    font-weight: 500;
+}
+
+.featured, .latest-blog {
+    padding: 4rem 0;
+    background-color: var(--gray-light);
+}
+
+.about {
+    padding: 4rem 0;
+}
+
+.blog-preview {
+    margin: 2rem 0;
+}
+
+.featured-post {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.blog-more {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.more-link {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
