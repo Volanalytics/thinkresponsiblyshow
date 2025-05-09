@@ -1,14 +1,60 @@
 ---
 layout: default
 title: Podcast
-description: Think Responsibly Show Podcast: Coming soon with civic insights.
+description: Think Responsibly Show Podcast - Thoughtful discussions on media literacy and civic engagement.
 ---
 <section class="podcast">
-    <h1>Podcast Coming Soon</h1>
-    <p>Stay tuned for the *Think Responsibly Show* podcast, exploring media literacy and civic engagement.</p>
-    <!-- TNAdLink.com Video Ad -->
-    <div class="ad-video">
-        <!-- Replace with TNAdLink.com ad script -->
-        <script async src="https://tnadlink.com/ad-script.js"></script>
+    <div class="container">
+        <h1>Podcast Coming Soon</h1>
+        <p>Stay tuned for the <em>Think Responsibly Show</em> podcast, where we'll explore media literacy, civic engagement, and critical thinking in the digital age.</p>
+        
+        <div class="podcast-container">
+            <h2>What to Expect</h2>
+            <div class="podcast-info">
+                <p>Host Romonte O. Hamer will guide you through thoughtful discussions with experts, civic leaders, and everyday citizens who are making a difference. Each episode will provide practical insights and tools to help you navigate our complex information landscape.</p>
+                
+                <p>The podcast will launch in Summer 2025 and will be available on all major podcast platforms including Spotify, Apple Podcasts, Google Podcasts, and more.</p>
+                
+                <div class="podcast-topics">
+                    <h3>Upcoming Topics Include:</h3>
+                    <ul>
+                        <li>Recognizing propaganda techniques in modern media</li>
+                        <li>How to have productive conversations across political divides</li>
+                        <li>Digital privacy and its impact on civic participation</li>
+                        <li>Understanding data and statistics in news reporting</li>
+                        <li>The role of social media in shaping public discourse</li>
+                        <li>Media literacy education for different age groups</li>
+                    </ul>
+                </div>
+                
+                <h3>Subscribe for Updates</h3>
+                <p>Be the first to know when the podcast launches. Enter your email to receive updates:</p>
+                
+                <form id="podcast-form" class="podcast-form">
+                    <input type="email" id="podcast-email" placeholder="Your email address" required>
+                    <button type="submit" class="btn">Get Notified</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="podcast-guest">
+            <h2>Interested in Being a Guest?</h2>
+            <p>We're looking for experts in media literacy, civic education, journalism, and related fields to share their insights on the show. If you're interested in being a guest, please <a href="{{ site.baseurl }}/contact">contact us</a> with information about your expertise and potential discussion topics.</p>
+        </div>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const podcastForm = document.getElementById('podcast-form');
+    if (podcastForm) {
+        podcastForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('podcast-email').value;
+            // Replace with actual email subscription service
+            alert(`Thank you! You'll be notified when the podcast launches.`);
+            podcastForm.reset();
+        });
+    }
+});
+</script>
