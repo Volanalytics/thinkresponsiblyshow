@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <meta name="keywords" content="Think Responsibly Show, informed citizen, media literacy, civic engagement">
+    <meta property="og:title" content="{{ page.title | default: site.title }}">
+    <meta property="og:description" content="{{ page.description | default: site.description }}">
+    <meta property="og:image" content="https://thinkresponsiblyshow.com/images/thinkresponsiblyshowmast.png">
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/"><img src="/images/thinkresponsiblyshowmast.png" alt="Think Responsibly Show Logo" class="logo-img"></a>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/resources">Resources</a></li>
+                <li><a href="/podcast">Podcast</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {{ content }}
+    </main>
+    <footer>
+        <p>© 2025 Think Responsibly Show. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://x.com/hamerthinks">X</a>
+            <a href="https://www.instagram.com/hamerthinks">Instagram</a>
+            <a href="https://www.facebook.com/hamerthinks">Facebook</a>
+        </div>
+    </footer>
+    <script src="/js/script.js"></script>
+</body>
+</html>
