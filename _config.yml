@@ -2,7 +2,38 @@ title: Think Responsibly Show
 description: Empowering informed citizens through media literacy and civic engagement.
 baseurl: "/thinkresponsiblyshow"
 url: "https://volanalytics.github.io"
-permalink: /:year/:month/:day/:title
+
+# Build settings
+markdown: kramdown
+future: true  # Allow future dated posts to be shown
+timezone: America/New_York
+
+# Permalink structure - VERY IMPORTANT FOR FIXING BLOG LINKS
+permalink: /blog/:year/:month/:day/:title/
+
+# Collections
+collections:
+  posts:
+    output: true
+
+# Defaults
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+
+# Plugins
 plugins:
   - jekyll-feed
-# Added to trigger rebuild
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - README.md
