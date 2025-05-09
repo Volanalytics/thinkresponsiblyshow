@@ -1,0 +1,11 @@
+# Remove Gemfile.lock if it exists
+rm -f Gemfile.lock
+
+# Create the new Gemfile with my updated content
+# (Copy from the "Updated Gemfile for Jekyll" artifact)
+
+# Install dependencies
+bundle install
+
+# Build your site
+bundle exec jekyll build
