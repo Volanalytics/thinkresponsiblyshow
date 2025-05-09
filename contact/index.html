@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Think Responsibly Show Blog - News analysis and civic engagement insights.">
+    <meta name="description" content="Contact Think Responsibly Show for collaborations, questions, and feedback.">
     <meta name="keywords" content="Think Responsibly Show, informed citizen, media literacy, civic engagement, misinformation, critical thinking">
-    <meta property="og:title" content="Blog">
-    <meta property="og:description" content="Think Responsibly Show Blog - News analysis and civic engagement insights.">
+    <meta property="og:title" content="Contact">
+    <meta property="og:description" content="Contact Think Responsibly Show for collaborations, questions, and feedback.">
     <meta property="og:image" content="/thinkresponsiblyshow/images/thinkresponsiblyshowmast.png">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://volanalytics.github.io/thinkresponsiblyshow/blog">
+    <meta property="og:url" content="https://volanalytics.github.io/thinkresponsiblyshow/contact/">
     <meta name="twitter:card" content="summary_large_image">
-    <title>Blog</title>
+    <title>Contact</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/thinkresponsiblyshow/css/style.css">
     <link rel="icon" href="/thinkresponsiblyshow/favicon.ico">
@@ -33,24 +33,131 @@
     </header>
     
     <main>
-        <section class="blog">
+        <section class="contact">
     <div class="container">
-        <h1>Blog</h1>
-        <p>Stay informed with our latest articles on media literacy, civic engagement, and information analysis.</p>
+        <h1>Contact Us</h1>
+        <p>Have questions, suggestions, or interested in collaborating? We'd love to hear from you. Fill out the form below, and we'll get back to you as soon as possible.</p>
         
-        
+        <div class="contact-grid">
+            <div class="contact-form-container">
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Your name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-email">Email</label>
+                        <input type="email" id="contact-email" placeholder="Your email address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" required>
+                            <option value="" disabled selected>Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="collaboration">Collaboration Opportunity</option>
+                            <option value="speaking">Speaking Request</option>
+                            <option value="feedback">Feedback</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Your message" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
             
-                <article>
-                    <h2><a href="/thinkresponsiblyshow/2025/05/08/new-post">How to Spot Misinformation</a></h2>
-                    <p class="meta">Posted on May 08, 2025</p>
-                    <p><h1 id="how-to-spot-misinformation-in-todays-information-environment">How to Spot Misinformation in Today’s Information Environment</h1>
-</p>
-                    <a href="/thinkresponsiblyshow/2025/05/08/new-post" class="read-more">Read More</a>
-                </article>
-            
-        
+            <div class="contact-info">
+                <div class="contact-method">
+                    <h3>Connect With Us</h3>
+                    <p>Follow us on social media for updates, resources, and discussions:</p>
+                    <div class="social-links-contact">
+                        <a href="https://x.com/hamerthinks" target="_blank">X (Twitter)</a>
+                        <a href="https://www.instagram.com/hamerthinks" target="_blank">Instagram</a>
+                        <a href="https://www.facebook.com/hamerthinks" target="_blank">Facebook</a>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <h3>Media Inquiries</h3>
+                    <p>For press and media inquiries, please include "Media" in your message subject line for faster response.</p>
+                </div>
+                
+                <div class="contact-method">
+                    <h3>Response Time</h3>
+                    <p>We aim to respond to all inquiries within 2-3 business days. Thank you for your patience!</p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
+<style>
+/* Additional Contact Page Styles */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+select {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid var(--gray-med);
+    border-radius: 4px;
+    background-color: white;
+}
+
+.contact-info {
+    background-color: var(--gray-light);
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.contact-method {
+    margin-bottom: 2rem;
+}
+
+.contact-method h3 {
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+}
+
+.social-links-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.social-links-contact a {
+    display: inline-block;
+    margin: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 
     </main>
     
