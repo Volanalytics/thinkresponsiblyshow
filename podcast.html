@@ -4,18 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Think Responsibly Show Podcast - Thoughtful discussions on media literacy and civic engagement.">
-    <meta name="keywords" content="Think Responsibly Show, informed citizen, media literacy, civic engagement">
+    <meta name="keywords" content="Think Responsibly Show, informed citizen, media literacy, civic engagement, misinformation, critical thinking">
     <meta property="og:title" content="Podcast">
     <meta property="og:description" content="Think Responsibly Show Podcast - Thoughtful discussions on media literacy and civic engagement.">
     <meta property="og:image" content="/thinkresponsiblyshow/images/thinkresponsiblyshowmast.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://volanalytics.github.io/thinkresponsiblyshow/podcast">
+    <meta name="twitter:card" content="summary_large_image">
     <title>Podcast</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/thinkresponsiblyshow/css/style.css">
     <link rel="icon" href="/thinkresponsiblyshow/favicon.ico">
 </head>
 <body>
     <header>
         <nav>
-            <a href="/thinkresponsiblyshow/"><img src="/thinkresponsiblyshow/images/thinkresponsiblyshowmast.png" alt="Think Responsibly Show Logo" class="logo-img"></a>
+            <a href="/thinkresponsiblyshow/" class="logo-link">
+                <img src="/thinkresponsiblyshow/images/thinkresponsiblyshowmast.png" alt="Think Responsibly Show Logo" class="logo-img">
+            </a>
             <ul>
                 <li><a href="/thinkresponsiblyshow/">Home</a></li>
                 <li><a href="/thinkresponsiblyshow/blog">Blog</a></li>
@@ -25,6 +31,7 @@
             </ul>
         </nav>
     </header>
+    
     <main>
         <section class="podcast">
     <div class="container">
@@ -83,14 +90,166 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
     </main>
+    
     <footer>
-        <p>© 2025 Think Responsibly Show. All rights reserved.</p>
-        <div class="social-links">
-            <a href="https://x.com/hamerthinks">X</a>
-            <a href="https://www.instagram.com/hamerthinks">Instagram</a>
-            <a href="https://www.facebook.com/hamerthinks">Facebook</a>
+        <div class="footer-content">
+            <div class="footer-nav">
+                <h3>Site Navigation</h3>
+                <ul>
+                    <li><a href="/thinkresponsiblyshow/">Home</a></li>
+                    <li><a href="/thinkresponsiblyshow/blog">Blog</a></li>
+                    <li><a href="/thinkresponsiblyshow/resources">Resources</a></li>
+                    <li><a href="/thinkresponsiblyshow/podcast">Podcast</a></li>
+                    <li><a href="/thinkresponsiblyshow/contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-resources">
+                <h3>Popular Resources</h3>
+                <ul>
+                    <li><a href="/thinkresponsiblyshow/resources/voter-guide-2025">Voter Guide</a></li>
+                    <li><a href="/thinkresponsiblyshow/resources/misinformation-checklist">Misinformation Checklist</a></li>
+                    <li><a href="/thinkresponsiblyshow/resources/media-literacy-toolkit">Media Literacy Toolkit</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-connect">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="https://x.com/hamerthinks" target="_blank">X</a>
+                    <a href="https://www.instagram.com/hamerthinks" target="_blank">Instagram</a>
+                    <a href="https://www.facebook.com/hamerthinks" target="_blank">Facebook</a>
+                </div>
+                <div class="footer-signup">
+                    <p>Get updates and resources:</p>
+                    <form id="footer-email-form">
+                        <input type="email" id="footer-email" placeholder="Your email" required>
+                        <button type="submit" class="btn btn-sm">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 Think Responsibly Show. All rights reserved.</p>
+            <p><a href="/thinkresponsiblyshow/privacy">Privacy Policy</a> | <a href="/thinkresponsiblyshow/terms">Terms of Use</a></p>
         </div>
     </footer>
+    
     <script src="/thinkresponsiblyshow/js/script.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Footer Email Form
+        const footerEmailForm = document.getElementById('footer-email-form');
+        if (footerEmailForm) {
+            footerEmailForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('footer-email').value;
+                // Replace with actual email subscription service
+                alert(`Thank you for subscribing, ${email}!`);
+                footerEmailForm.reset();
+            });
+        }
+    });
+    </script>
+    
+    <style>
+    /* Footer Styles */
+    footer {
+        background: var(--primary-dark);
+        color: var(--text-light);
+        padding: 3rem 1rem 1rem;
+    }
+    
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto 2rem;
+    }
+    
+    .footer-content h3 {
+        color: var(--accent-light);
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .footer-content ul {
+        list-style: none;
+    }
+    
+    .footer-content ul li {
+        margin-bottom: 0.5rem;
+    }
+    
+    .footer-content a {
+        color: var(--text-light);
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    
+    .footer-content a:hover {
+        color: var(--accent-light);
+        text-decoration: underline;
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .footer-signup {
+        margin-top: 1.5rem;
+    }
+    
+    .footer-signup form {
+        display: flex;
+        margin-top: 0.5rem;
+    }
+    
+    .footer-signup input {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+        border: none;
+        border-radius: 4px 0 0 4px;
+        width: 100%;
+    }
+    
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 0 4px 4px 0;
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 0.9rem;
+    }
+    
+    .footer-bottom a {
+        color: var(--text-light);
+    }
+    
+    @media (max-width: 768px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+        
+        .social-links {
+            justify-content: center;
+        }
+        
+        .footer-signup form {
+            max-width: 300px;
+            margin: 0.5rem auto;
+        }
+    }
+    </style>
 </body>
 </html>
