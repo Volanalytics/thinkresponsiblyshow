@@ -1,10 +1,7 @@
 source "https://rubygems.org"
 
-# Use GitHub Pages gem for consistent environment
-gem "github-pages", group: :jekyll_plugins
-
-# If you have specific Jekyll version requirements, uncomment this line
-# gem "jekyll", "~> 3.9.0"
+# Use Jekyll directly instead of github-pages
+gem "jekyll", "~> 4.2"
 
 # Jekyll plugins
 group :jekyll_plugins do
@@ -23,3 +20,6 @@ gem "wdm", "~> 0.1.1", :platforms => [:mingw, :x64_mingw, :mswin]
 
 # Lock kramdown version for security
 gem "kramdown", ">= 2.3.0"
+
+# Webrick is required for Ruby 3.0+
+gem "webrick"
