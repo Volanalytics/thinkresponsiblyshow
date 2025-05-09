@@ -1,11 +1,40 @@
-# Remove Gemfile.lock if it exists
-rm -f Gemfile.lock
+name: Build and deploy Jekyll site to GitHub Pages
 
-# Create the new Gemfile with my updated content
-# (Copy from the "Updated Gemfile for Jekyll" artifact)
+on:
+  push:
+    branches:
+      - main  # or master, depending on your default branch name
 
-# Install dependencies
-bundle install
-
-# Build your site
-bundle exec jekyll build
+jobs:
+  github-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      # Use GitHub Actions' cache to shorten build times and decrease load on servers
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      
+      # Use GitHub Actions' Ruby to avoid errors with native gems
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7 # or whatever version you're using
+          bundler-cache: true
+      
+      # Install dependencies & build site
+      - name: Build Jekyll
+        run: |
+          bundle config path vendor/bundle
+          bundle install
+          bundle exec jekyll build
+      
+      # Deploy the site to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
