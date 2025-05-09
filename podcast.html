@@ -1,9 +1,96 @@
-<section class="podcast">
-    <h1>Podcast Coming Soon</h1>
-    <p>Stay tuned for the *Think Responsibly Show* podcast, exploring media literacy and civic engagement.</p>
-    <!-- TNAdLink.com Video Ad -->
-    <div class="ad-video">
-        <!-- Replace with TNAdLink.com ad script -->
-        <script async src="https://tnadlink.com/ad-script.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Think Responsibly Show Podcast - Thoughtful discussions on media literacy and civic engagement.">
+    <meta name="keywords" content="Think Responsibly Show, informed citizen, media literacy, civic engagement">
+    <meta property="og:title" content="Podcast">
+    <meta property="og:description" content="Think Responsibly Show Podcast - Thoughtful discussions on media literacy and civic engagement.">
+    <meta property="og:image" content="/thinkresponsiblyshow/images/thinkresponsiblyshowmast.png">
+    <title>Podcast</title>
+    <link rel="stylesheet" href="/thinkresponsiblyshow/css/style.css">
+    <link rel="icon" href="/thinkresponsiblyshow/favicon.ico">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/thinkresponsiblyshow/"><img src="/thinkresponsiblyshow/images/thinkresponsiblyshowmast.png" alt="Think Responsibly Show Logo" class="logo-img"></a>
+            <ul>
+                <li><a href="/thinkresponsiblyshow/">Home</a></li>
+                <li><a href="/thinkresponsiblyshow/blog">Blog</a></li>
+                <li><a href="/thinkresponsiblyshow/resources">Resources</a></li>
+                <li><a href="/thinkresponsiblyshow/podcast">Podcast</a></li>
+                <li><a href="/thinkresponsiblyshow/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="podcast">
+    <div class="container">
+        <h1>Podcast Coming Soon</h1>
+        <p>Stay tuned for the <em>Think Responsibly Show</em> podcast, where we'll explore media literacy, civic engagement, and critical thinking in the digital age.</p>
+        
+        <div class="podcast-container">
+            <h2>What to Expect</h2>
+            <div class="podcast-info">
+                <p>Host Romonte O. Hamer will guide you through thoughtful discussions with experts, civic leaders, and everyday citizens who are making a difference. Each episode will provide practical insights and tools to help you navigate our complex information landscape.</p>
+                
+                <p>The podcast will launch in Summer 2025 and will be available on all major podcast platforms including Spotify, Apple Podcasts, Google Podcasts, and more.</p>
+                
+                <div class="podcast-topics">
+                    <h3>Upcoming Topics Include:</h3>
+                    <ul>
+                        <li>Recognizing propaganda techniques in modern media</li>
+                        <li>How to have productive conversations across political divides</li>
+                        <li>Digital privacy and its impact on civic participation</li>
+                        <li>Understanding data and statistics in news reporting</li>
+                        <li>The role of social media in shaping public discourse</li>
+                        <li>Media literacy education for different age groups</li>
+                    </ul>
+                </div>
+                
+                <h3>Subscribe for Updates</h3>
+                <p>Be the first to know when the podcast launches. Enter your email to receive updates:</p>
+                
+                <form id="podcast-form" class="podcast-form">
+                    <input type="email" id="podcast-email" placeholder="Your email address" required>
+                    <button type="submit" class="btn">Get Notified</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="podcast-guest">
+            <h2>Interested in Being a Guest?</h2>
+            <p>We're looking for experts in media literacy, civic education, journalism, and related fields to share their insights on the show. If you're interested in being a guest, please <a href="/thinkresponsiblyshow/contact">contact us</a> with information about your expertise and potential discussion topics.</p>
+        </div>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const podcastForm = document.getElementById('podcast-form');
+    if (podcastForm) {
+        podcastForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('podcast-email').value;
+            // Replace with actual email subscription service
+            alert(`Thank you! You'll be notified when the podcast launches.`);
+            podcastForm.reset();
+        });
+    }
+});
+</script>
+
+    </main>
+    <footer>
+        <p>© 2025 Think Responsibly Show. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://x.com/hamerthinks">X</a>
+            <a href="https://www.instagram.com/hamerthinks">Instagram</a>
+            <a href="https://www.facebook.com/hamerthinks">Facebook</a>
+        </div>
+    </footer>
+    <script src="/thinkresponsiblyshow/js/script.js"></script>
+</body>
+</html>
