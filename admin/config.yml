@@ -2,14 +2,7 @@ backend:
   name: github
   repo: Volanalytics/thinkresponsiblyshow
   branch: main
-  base_url: https://api.github.com
-  auth_endpoint: oauth/authorize
-  commit_messages:
-    create: 'Create {{collection}} "{{slug}}"'
-    update: 'Update {{collection}} "{{slug}}"'
-    delete: 'Delete {{collection}} "{{slug}}"'
-    uploadMedia: 'Upload "{{path}}"'
-    deleteMedia: 'Delete "{{path}}"'
+  site_domain: volanalytics.github.io
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
