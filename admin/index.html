@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Think Responsibly Show - Content Manager</title>
+  <!-- Include Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    // Custom preview styles
+    CMS.registerPreviewStyle("/css/style.css");
+    
+    // Zapier webhook for social media cross-posting
+    CMS.registerEventListener({
+      name: 'postPublish',
+      handler: async ({ entry }) => {
+        const post = entry.get('data').toJS();
+        
+        // Only trigger if social sharing is enabled
+        if (post.social_share && post.social_share.length > 0) {
+          try {
+            // Replace this URL with your actual Zapier webhook URL
+            const webhookUrl = 'YOUR_ZAPIER_WEBHOOK_URL';
+            
+            await fetch(webhookUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                title: post.title,
+                description: post.social_description || post.description,
+                url: `${window.location.origin}/blog/${entry.get('slug')}`,
+                image: post.image,
+                platforms: post.social_share
+              }),
+            });
+          } catch (error) {
+            console.error('Error sending to social media:', error);
+          }
+        }
+      },
+    });
+  </script>
+</head>
+<body>
+  <!-- Decap CMS will inject its interface here -->
+</body>
+</html>

@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ page.description | default: site.description }}">
     <meta name="keywords" content="Think Responsibly Show, informed citizen, media literacy, civic engagement, misinformation, critical thinking">
-    <meta property="og:title" content="{{ page.title | default: site.title }}">
-    <meta property="og:description" content="{{ page.description | default: site.description }}">
-    <meta property="og:image" content="{{ site.baseurl }}/images/thinkresponsiblyshowmast.png">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ site.url }}{{ site.baseurl }}{{ page.url }}">
-    <meta name="twitter:card" content="summary_large_image">
+    {% include social-meta.html %}
     <title>{{ page.title | default: site.title }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ site.baseurl }}/css/style.css">
