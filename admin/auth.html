@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Editor Authentication</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        button {
+            background: #2ea44f;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        button:hover {
+            background: #2c974b;
+        }
+        .token-input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .instructions {
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .instructions a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        .instructions a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Blog Editor Authentication</h2>
+        <div class="instructions">
+            <p>To use the blog editor, you'll need a GitHub Personal Access Token with 'repo' scope:</p>
+            
+            <ol>
+                <li>Go to <a href="https://github.com/settings/tokens" target="_blank">GitHub Token Settings</a></li>
+                <li>Click "Generate new token (classic)"</li>
+                <li>Note: "Think Responsibly Show Blog Editor"</li>
+                <li>Select the "repo" scope</li>
+                <li>Click "Generate token"</li>
+                <li>Copy the token and paste it below</li>
+            </ol>
+        </div>
+
+        <input type="password" id="token" class="token-input" placeholder="Paste your GitHub token here">
+        <button onclick="saveToken()">Save Token & Continue</button>
+    </div>
+
+    <script>
+        function saveToken() {
+            const token = document.getElementById('token').value.trim();
+            if (!token) {
+                alert('Please enter a token');
+                return;
+            }
+
+            // Verify the token by making a test API call
+            fetch('https://api.github.com/user', {
+                headers: {
+                    'Authorization': `token ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Invalid token');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Store the token
+                localStorage.setItem('github_token', token);
+                // Redirect to editor
+                window.location.href = 'index.html';
+            })
+            .catch(error => {
+                alert('Invalid token. Please check your token and try again.');
+            });
+        }
+    </script>
+</body>
+</html>
