@@ -2,9 +2,12 @@ backend:
   name: github
   repo: Volanalytics/thinkresponsiblyshow
   branch: main
-  auth_endpoint: auth
-  base_url: https://api.netlify.com
-  auth_type: implicit
+  commit_messages:
+    create: 'Create {{collection}} "{{slug}}"'
+    update: 'Update {{collection}} "{{slug}}"'
+    delete: 'Delete {{collection}} "{{slug}}"'
+    uploadMedia: 'Upload "{{path}}"'
+    deleteMedia: 'Delete "{{path}}"'
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
