@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://volanalytics.github.io/thinkresponsiblyshow/feed.xml" rel="self" type="application/atom+xml" /><link href="https://volanalytics.github.io/thinkresponsiblyshow/" rel="alternate" type="text/html" /><updated>2025-05-09T13:21:06-04:00</updated><id>https://volanalytics.github.io/thinkresponsiblyshow/feed.xml</id><title type="html">Think Responsibly Show</title><subtitle>Empowering informed citizens through media literacy and civic engagement.</subtitle><entry><title type="html">How to Spot Misinformation</title><link href="https://volanalytics.github.io/thinkresponsiblyshow/blog/2025/05/08/new-post/" rel="alternate" type="text/html" title="How to Spot Misinformation" /><published>2025-05-08T00:00:00-04:00</published><updated>2025-05-08T00:00:00-04:00</updated><id>https://volanalytics.github.io/thinkresponsiblyshow/blog/2025/05/08/new-post</id><content type="html" xml:base="https://volanalytics.github.io/thinkresponsiblyshow/blog/2025/05/08/new-post/"><![CDATA[<h1 id="how-to-spot-misinformation-in-todays-information-environment">How to Spot Misinformation in Today’s Information Environment</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://volanalytics.github.io/thinkresponsiblyshow/feed.xml" rel="self" type="application/atom+xml" /><link href="https://volanalytics.github.io/thinkresponsiblyshow/" rel="alternate" type="text/html" /><updated>2025-05-14T18:57:47-04:00</updated><id>https://volanalytics.github.io/thinkresponsiblyshow/feed.xml</id><title type="html">Think Responsibly Show</title><subtitle>Empowering informed citizens through media literacy and civic engagement.</subtitle><entry><title type="html">How to Spot Misinformation</title><link href="https://volanalytics.github.io/thinkresponsiblyshow/blog/2025/05/08/new-post/" rel="alternate" type="text/html" title="How to Spot Misinformation" /><published>2025-05-08T00:00:00-04:00</published><updated>2025-05-08T00:00:00-04:00</updated><id>https://volanalytics.github.io/thinkresponsiblyshow/blog/2025/05/08/new-post</id><content type="html" xml:base="https://volanalytics.github.io/thinkresponsiblyshow/blog/2025/05/08/new-post/"><![CDATA[<h1 id="how-to-spot-misinformation-in-todays-information-environment">How to Spot Misinformation in Today’s Information Environment</h1>
 
 <p>In an era where information spreads faster than ever, distinguishing fact from fiction has become essential. Misinformation can shape public opinion, influence decisions, and even impact democratic processes. The following strategies will help you verify news sources and avoid falling for fake news.</p>
 
@@ -142,4 +142,83 @@
   </li>
 </ul>
 
-<p>By applying these steps consistently, you can navigate the news landscape with greater confidence and contribute to more informed civic discussions. Remember that critical thinking is a skill that improves with practice—start applying these principles today, and you’ll become more adept at spotting misinformation over time.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[How to Spot Misinformation in Today’s Information Environment]]></summary></entry></feed>
+<p>By applying these steps consistently, you can navigate the news landscape with greater confidence and contribute to more informed civic discussions. Remember that critical thinking is a skill that improves with practice—start applying these principles today, and you’ll become more adept at spotting misinformation over time.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[How to Spot Misinformation in Today’s Information Environment]]></summary></entry><entry><title type="html">Sample Post Template</title><link href="https://volanalytics.github.io/thinkresponsiblyshow/blog/2024/01/01/sample-post-template/" rel="alternate" type="text/html" title="Sample Post Template" /><published>2024-01-01T09:00:00-05:00</published><updated>2024-01-01T09:00:00-05:00</updated><id>https://volanalytics.github.io/thinkresponsiblyshow/blog/2024/01/01/sample-post-template</id><content type="html" xml:base="https://volanalytics.github.io/thinkresponsiblyshow/blog/2024/01/01/sample-post-template/"><![CDATA[<h1 id="writing-posts-for-think-responsibly-show">Writing Posts for Think Responsibly Show</h1>
+
+<p>This template demonstrates how to structure your blog posts and use available features.</p>
+
+<h2 id="post-structure">Post Structure</h2>
+
+<p>Your post should include:</p>
+
+<ol>
+  <li>A clear, engaging title</li>
+  <li>An introduction that hooks the reader</li>
+  <li>Well-organized sections with subheadings</li>
+  <li>Relevant examples and evidence</li>
+  <li>A strong conclusion</li>
+</ol>
+
+<h2 id="formatting-options">Formatting Options</h2>
+
+<p>You can use various Markdown formatting options:</p>
+
+<h3 id="text-formatting">Text Formatting</h3>
+
+<ul>
+  <li><strong>Bold text</strong> for emphasis</li>
+  <li><em>Italic text</em> for subtle emphasis</li>
+  <li><code class="language-plaintext highlighter-rouge">Code snippets</code> for technical terms</li>
+</ul>
+
+<h3 id="lists">Lists</h3>
+
+<p>Ordered lists:</p>
+<ol>
+  <li>First point</li>
+  <li>Second point</li>
+  <li>Third point</li>
+</ol>
+
+<p>Unordered lists:</p>
+<ul>
+  <li>Key concept</li>
+  <li>Supporting evidence</li>
+  <li>Example</li>
+</ul>
+
+<h3 id="quotes">Quotes</h3>
+
+<blockquote>
+  <p>Use blockquotes to highlight important statements or citations from sources.</p>
+</blockquote>
+
+<h3 id="links">Links</h3>
+
+<p>Link to <a href="/thinkresponsiblyshow/resources">other resources</a> or external sources.</p>
+
+<h2 id="images">Images</h2>
+
+<p>Include images using Markdown syntax:</p>
+
+<p><img src="/thinkresponsiblyshow/images/uploads/example-image.jpg" alt="Alt text for image" /></p>
+
+<h2 id="social-media-optimization">Social Media Optimization</h2>
+
+<p>This template includes:</p>
+<ul>
+  <li>A specific social media description</li>
+  <li>Selected platforms for cross-posting</li>
+  <li>An optimized featured image</li>
+</ul>
+
+<h2 id="best-practices">Best Practices</h2>
+
+<ol>
+  <li>Keep paragraphs concise</li>
+  <li>Use headers to organize content</li>
+  <li>Include relevant tags</li>
+  <li>Optimize for social sharing</li>
+  <li>Add engaging media when relevant</li>
+</ol>
+
+<p>Remember to preview your post before publishing and ensure all social sharing elements are properly configured.</p>]]></content><author><name></name></author><category term="template" /><category term="guide" /><category term="blogging" /><summary type="html"><![CDATA[This is a sample post template demonstrating all available features and formatting options for the Think Responsibly Show blog.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://volanalytics.github.io/thinkresponsiblyshow/images/uploads/sample-post-cover.jpg" /><media:content medium="image" url="https://volanalytics.github.io/thinkresponsiblyshow/images/uploads/sample-post-cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
