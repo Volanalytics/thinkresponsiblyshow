@@ -4,61 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Think Responsibly Show - Content Manager</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
-  <!-- Include the script that builds the page and powers Decap CMS -->
-  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  <!-- Include the Decap CMS script -->
+  <script src="https://unpkg.com/@staticcms/app@^3.4.5/dist/static-cms-app.js"></script>
   <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
-
-    // Initialize CMS when the page is ready
-    window.addEventListener('load', function() {
-      if (window.CMS) {
-        // Custom preview styles
-        CMS.registerPreviewStyle("/css/style.css");
-        
-        // Zapier webhook for social media cross-posting
-        CMS.registerEventListener({
-          name: 'postPublish',
-          handler: async ({ entry }) => {
-            const post = entry.get('data').toJS();
-            
-            // Only trigger if social sharing is enabled
-            if (post.social_share && post.social_share.length > 0) {
-              try {
-                // Replace this URL with your actual Zapier webhook URL
-                const webhookUrl = 'YOUR_ZAPIER_WEBHOOK_URL';
-                
-                await fetch(webhookUrl, {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    title: post.title,
-                    description: post.social_description || post.description,
-                    url: `${window.location.origin}/blog/${entry.get('slug')}`,
-                    image: post.image,
-                    platforms: post.social_share
-                  }),
-                });
-              } catch (error) {
-                console.error('Error sending to social media:', error);
-              }
-            }
-          },
-        });
-      }
-    });
+    window.CMS.init();
   </script>
 </body>
 </html>
