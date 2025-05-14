@@ -6,10 +6,31 @@
   <title>Think Responsibly Show - Content Manager</title>
 </head>
 <body>
-  <!-- Include the Decap CMS script -->
-  <script src="https://unpkg.com/@staticcms/app@^3.4.5/dist/static-cms-app.js"></script>
+  <!-- Include the script that builds the page and powers Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <script>
-    window.CMS.init();
+    // YouTube-style loading animation
+    const style = document.createElement('style');
+    style.textContent = `
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      .loading::after {
+        content: "Loading CMS...";
+        color: #666;
+        font-size: 16px;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Add loading indicator
+    const loading = document.createElement('div');
+    loading.className = 'loading';
+    document.body.appendChild(loading);
   </script>
 </body>
 </html>
