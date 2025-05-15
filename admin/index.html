@@ -465,8 +465,47 @@
         // Configuration
         const config = {
             webhookUrl: 'https://hooks.zapier.com/hooks/catch/22496116/27ha7ls/',
-            socialPlatforms: ['twitter', 'facebook', 'instagram', 'tiktok', 'youtube', 'rumble']
+            socialPlatforms: ['twitter', 'facebook', 'instagram', 'tiktok', 'youtube', 'rumble'],
+            videoWebhooks: {
+                youtube: 'https://hooks.zapier.com/hooks/catch/youtube-webhook-id',
+                rumble: 'https://hooks.zapier.com/hooks/catch/rumble-webhook-id'
+            }
         };
+
+        // Function to handle video uploads
+        async function handleVideoUpload(postData) {
+            if (postData.video) {
+                const platforms = postData.video.platforms;
+                
+                // Upload to YouTube if enabled
+                if (platforms.youtube && platforms.youtube.enabled) {
+                    try {
+                        await fetch(config.videoWebhooks.youtube, {
+                            method: 'POST',
+                            body: JSON.stringify(postData),
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                    } catch (error) {
+                        console.error('YouTube upload error:', error);
+                        throw new Error('Failed to upload to YouTube');
+                    }
+                }
+                
+                // Upload to Rumble if enabled
+                if (platforms.rumble && platforms.rumble.enabled) {
+                    try {
+                        await fetch(config.videoWebhooks.rumble, {
+                            method: 'POST',
+                            body: JSON.stringify(postData),
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                    } catch (error) {
+                        console.error('Rumble upload error:', error);
+                        throw new Error('Failed to upload to Rumble');
+                    }
+                }
+            }
+        }
 
         // Handle video section visibility
         const videoSection = document.getElementById('videoSection');
