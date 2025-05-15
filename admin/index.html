@@ -202,6 +202,25 @@
         .delete-button:hover {
             background: #c82333;
         }
+
+        .loading {
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
     </style>
 </head>
 <body>
@@ -344,6 +363,14 @@
 
         // Function to show post list
         async function showPostList() {
+            const postList = document.getElementById('postList');
+            const postGrid = document.getElementById('postGrid');
+            const postForm = document.getElementById('postForm');
+            
+            postGrid.innerHTML = '<p>Loading posts...</p>';
+            postList.style.display = 'block';
+            postForm.style.display = 'none';
+            
             try {
                 const response = await fetch('https://api.github.com/repos/Volanalytics/thinkresponsiblyshow/contents/_posts', {
                     headers: {
@@ -360,29 +387,46 @@
                 const postGrid = document.getElementById('postGrid');
                 postGrid.innerHTML = '';
 
-                for (const post of posts) {
-                    const content = await fetch(post.download_url).then(res => res.text());
-                    const frontMatter = content.split('---')[1];
-                    const metadata = {};
-                    frontMatter.split('\n').forEach(line => {
-                        const [key, ...value] = line.split(':');
-                        if (key && value.length) {
-                            metadata[key.trim()] = value.join(':').trim().replace(/^"(.*)"$/, '$1');
-                        }
-                    });
+                if (posts.length === 0) {
+                    postGrid.innerHTML = '<p>No posts found. Click "New Post" to create one.</p>';
+                } else {
+                    for (const post of posts) {
+                        try {
+                            const content = await fetch(post.download_url).then(res => res.text());
+                            const parts = content.split('---');
+                            if (parts.length < 3) {
+                                console.warn(`Invalid post format: ${post.path}`);
+                                continue;
+                            }
+                            
+                            const frontMatter = parts[1];
+                            const metadata = {};
+                            frontMatter.split('\n').forEach(line => {
+                                if (line.includes(':')) {
+                                    const [key, ...value] = line.split(':');
+                                    if (key && value.length) {
+                                        metadata[key.trim()] = value.join(':').trim().replace(/^"(.*)"$/, '$1');
+                                    }
+                                }
+                            });
 
-                    const postCard = document.createElement('div');
-                    postCard.className = 'post-card';
-                    postCard.innerHTML = `
-                        <h3>${metadata.title || 'Untitled'}</h3>
-                        <p>Author: ${metadata.author || 'Unknown'}</p>
-                        <p>Date: ${metadata.date || 'No date'}</p>
-                        <div class="actions">
-                            <button onclick="editPost('${post.path}')" class="edit-button">Edit</button>
-                            <button onclick="deletePost('${post.path}')" class="delete-button">Delete</button>
-                        </div>
-                    `;
-                    postGrid.appendChild(postCard);
+                            const postCard = document.createElement('div');
+                            postCard.className = 'post-card';
+                            postCard.innerHTML = `
+                                <h3>${metadata.title || 'Untitled'}</h3>
+                                <p>Author: ${metadata.author || 'Unknown'}</p>
+                                <p>Date: ${metadata.date ? new Date(metadata.date).toLocaleString() : 'No date'}</p>
+                                <div class="actions">
+                                    <button onclick="editPost('${post.path}')" class="edit-button">Edit</button>
+                                    <button onclick="deletePost('${post.path}')" class="delete-button">Delete</button>
+                                </div>
+                            `;
+                            postGrid.appendChild(postCard);
+                        } catch (error) {
+                            console.error(`Error processing post ${post.path}:`, error);
+                            continue;
+                        }
+                    }
                 }
 
                 document.getElementById('postList').style.display = 'block';
@@ -394,6 +438,15 @@
 
         // Function to edit post
         async function editPost(path) {
+            const postList = document.getElementById('postList');
+            const postForm = document.getElementById('postForm');
+            const editor = document.getElementById('editor');
+            
+            editor.value = 'Loading post content...';
+            preview.innerHTML = '<div class="loading">Loading post</div>';
+            postList.style.display = 'none';
+            postForm.style.display = 'block';
+            
             try {
                 const response = await fetch(`https://api.github.com/repos/Volanalytics/thinkresponsiblyshow/contents/${path}`, {
                     headers: {
@@ -408,14 +461,22 @@
 
                 const data = await response.json();
                 const content = atob(data.content);
-                const [_, frontMatter, ...bodyParts] = content.split('---');
-                const body = bodyParts.join('---').trim();
+                const parts = content.split('---');
+                
+                if (parts.length < 3) {
+                    throw new Error('Invalid post format: Missing front matter');
+                }
+                
+                const frontMatter = parts[1];
+                const body = parts.slice(2).join('---').trim();
                 
                 const metadata = {};
                 frontMatter.split('\n').forEach(line => {
-                    const [key, ...value] = line.split(':');
-                    if (key && value.length) {
-                        metadata[key.trim()] = value.join(':').trim().replace(/^"(.*)"$/, '$1');
+                    if (line.includes(':')) {
+                        const [key, ...value] = line.split(':');
+                        if (key && value.length) {
+                            metadata[key.trim()] = value.join(':').trim().replace(/^"(.*)"$/, '$1');
+                        }
                     }
                 });
 
@@ -440,9 +501,15 @@
 
         // Function to delete post
         async function deletePost(path) {
-            if (!confirm('Are you sure you want to delete this post?')) {
+            const postName = path.split('/').pop();
+            if (!confirm(`Are you sure you want to delete "${postName}"? This action cannot be undone.`)) {
                 return;
             }
+
+            const deleteButton = event.target;
+            const originalText = deleteButton.textContent;
+            deleteButton.textContent = 'Deleting...';
+            deleteButton.disabled = true;
 
             try {
                 // Get the file's SHA
@@ -481,6 +548,8 @@
                 showPostList();
             } catch (error) {
                 showStatus('Failed to delete post: ' + error.message, 'error');
+                deleteButton.textContent = originalText;
+                deleteButton.disabled = false;
             }
         }
 
@@ -514,8 +583,10 @@
         // Form submission
         document.getElementById('postForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const originalButtonText = publishButton.textContent;
             publishButton.disabled = true;
             publishButton.textContent = 'Publishing...';
+            publishButton.classList.add('loading');
             
             try {
                 const title = document.getElementById('title').value;
@@ -639,7 +710,8 @@ ${content}`;
                 console.error('Full error details:', error);
             } finally {
                 publishButton.disabled = false;
-                publishButton.textContent = 'Publish Post';
+                publishButton.textContent = originalButtonText;
+                publishButton.classList.remove('loading');
             }
         });
 
