@@ -21,6 +21,7 @@ A modern blogging system with integrated social media cross-posting capabilities
 2. Create a Post:
    - Click "New Post"
    - Fill in the required fields
+   - Add images by uploading to `/images/uploads/` ([see Image Guide](docs/IMAGE_GUIDE.md))
    - Select social media platforms for sharing
    - Preview and publish
 
