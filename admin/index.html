@@ -472,40 +472,144 @@
             }
         };
 
-        // Function to handle video uploads
+        // Function to handle video upload and blog post creation
         async function handleVideoUpload(postData) {
-            if (postData.video) {
-                const platforms = postData.video.platforms;
-                
-                // Upload to YouTube if enabled
-                if (platforms.youtube && platforms.youtube.enabled) {
-                    try {
-                        await fetch(config.videoWebhooks.youtube, {
-                            method: 'POST',
-                            body: JSON.stringify(postData),
-                            headers: { 'Content-Type': 'application/json' }
-                        });
-                    } catch (error) {
-                        console.error('YouTube upload error:', error);
-                        throw new Error('Failed to upload to YouTube');
+            if (postData.video && postData.video.file) {
+                try {
+                    const videoData = {
+                        title: postData.video.title,
+                        description: postData.video.description,
+                        tags: postData.video.tags,
+                        category: postData.video.category,
+                        file: postData.video.file
+                    };
+
+                    // Initialize platforms object
+                    postData.video.platforms = {
+                        youtube: { enabled: false },
+                        rumble: { enabled: false }
+                    };
+
+                    // Upload to YouTube if selected
+                    if (youtubeCheckbox.checked) {
+                        try {
+                            const youtubeResponse = await fetch(config.videoWebhooks.youtube, {
+                                method: 'POST',
+                                body: JSON.stringify(videoData),
+                                headers: { 'Content-Type': 'application/json' }
+                            });
+
+                            if (!youtubeResponse.ok) {
+                                throw new Error('YouTube upload failed');
+                            }
+
+                            const youtubeData = await youtubeResponse.json();
+                            postData.video.platforms.youtube = {
+                                enabled: true,
+                                video_id: youtubeData.video_id,
+                                thumbnail: `https://img.youtube.com/vi/${youtubeData.video_id}/maxresdefault.jpg`
+                            };
+                        } catch (error) {
+                            console.error('YouTube upload error:', error);
+                            alert('YouTube upload failed. Continuing with other platforms...');
+                        }
                     }
-                }
-                
-                // Upload to Rumble if enabled
-                if (platforms.rumble && platforms.rumble.enabled) {
-                    try {
-                        await fetch(config.videoWebhooks.rumble, {
-                            method: 'POST',
-                            body: JSON.stringify(postData),
-                            headers: { 'Content-Type': 'application/json' }
-                        });
-                    } catch (error) {
-                        console.error('Rumble upload error:', error);
-                        throw new Error('Failed to upload to Rumble');
+
+                    // Upload to Rumble if selected
+                    if (rumbleCheckbox.checked) {
+                        try {
+                            const rumbleResponse = await fetch(config.videoWebhooks.rumble, {
+                                method: 'POST',
+                                body: JSON.stringify(videoData),
+                                headers: { 'Content-Type': 'application/json' }
+                            });
+
+                            if (!rumbleResponse.ok) {
+                                throw new Error('Rumble upload failed');
+                            }
+
+                            const rumbleData = await rumbleResponse.json();
+                            postData.video.platforms.rumble = {
+                                enabled: true,
+                                video_id: rumbleData.video_id,
+                                thumbnail: rumbleData.thumbnail_url
+                            };
+                        } catch (error) {
+                            console.error('Rumble upload error:', error);
+                            alert('Rumble upload failed. Continuing with other platforms...');
+                        }
                     }
+
+                    // Remove file data as it's no longer needed
+                    delete postData.video.file;
+
+                    // Check if at least one platform upload succeeded
+                    if (!postData.video.platforms.youtube.enabled && !postData.video.platforms.rumble.enabled) {
+                        throw new Error('Failed to upload to any platform');
+                    }
+
+                    return postData;
+                } catch (error) {
+                    console.error('Video upload error:', error);
+                    throw error;
                 }
             }
+            return postData;
         }
+
+        // Update form submission to handle video upload first
+        document.getElementById('postForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Publishing...';
+
+            try {
+                const formData = new FormData(e.target);
+                let postData = {
+                    title: formData.get('title'),
+                    content: formData.get('content'),
+                    social: Array.from(formData.getAll('social')),
+                    date: formData.get('date'),
+                    author: formData.get('author')
+                };
+
+                // Handle video if present
+                if (videoSection.style.display === 'block') {
+                    postData.video = {
+                        title: formData.get('videoTitle'),
+                        description: formData.get('videoDescription'),
+                        tags: formData.get('videoTags').split(',').map(tag => tag.trim()),
+                        category: formData.get('videoCategory'),
+                        file: videoData
+                    };
+                    
+                    // Process video upload first
+                    postData = await handleVideoUpload(postData);
+                }
+
+                // Create blog post
+                const response = await fetch(config.webhookUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(postData),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to create blog post');
+                }
+
+                alert('Post published successfully!');
+                e.target.reset();
+                videoData = null;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error publishing post. Please try again.');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Publish Post';
+            }
+        });
 
         // Handle video section visibility
         const videoSection = document.getElementById('videoSection');
