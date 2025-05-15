@@ -158,6 +158,37 @@
         .post-card h3 {
             margin: 0 0 10px 0;
             font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .podcast-badge {
+            background: #6366f1;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        #podcastFields {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        #podcastFields .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkbox-group {
+            background: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
         }
         
         .post-card p {
@@ -263,6 +294,30 @@
             <div class="form-group">
                 <label for="description">Description:</label>
                 <textarea id="description" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="isPodcast" name="isPodcast">
+                    <label for="isPodcast">This is a podcast episode</label>
+                </div>
+            </div>
+
+            <div id="podcastFields" style="display: none;">
+                <div class="form-group">
+                    <label for="episodeNumber">Episode Number:</label>
+                    <input type="number" id="episodeNumber" min="1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="duration">Duration (HH:MM:SS):</label>
+                    <input type="text" id="duration" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}" placeholder="00:30:00">
+                </div>
+                
+                <div class="form-group">
+                    <label for="audioUrl">Audio URL:</label>
+                    <input type="url" id="audioUrl" placeholder="https://example.com/podcast.mp3">
+                </div>
             </div>
             
             <div class="form-group">
@@ -478,9 +533,15 @@
                         const postCard = document.createElement('div');
                         postCard.className = 'post-card';
                         postCard.innerHTML = `
-                            <h3>${metadata.title || 'Untitled'}</h3>
+                            <h3>
+                                ${metadata.title || 'Untitled'}
+                                ${metadata.layout === 'podcast' ? '<span class="podcast-badge">Podcast</span>' : ''}
+                            </h3>
                             <p>Author: ${metadata.author || 'Unknown'}</p>
                             <p>Date: ${metadata.date ? new Date(metadata.date).toLocaleString() : 'No date'}</p>
+                            ${metadata.layout === 'podcast' ? `
+                            <p>Episode ${metadata.episode_number || 'N/A'} • ${metadata.duration || '00:00:00'}</p>
+                            ` : ''}
                             <div class="actions">
                                 <button onclick="editPost('${post.path}')" class="edit-button">Edit</button>
                                 <button onclick="deletePost('${post.path}')" class="delete-button">Delete</button>
@@ -557,6 +618,21 @@
                 document.getElementById('author').value = metadata.author || '';
                 document.getElementById('datetime').value = metadata.date ? new Date(metadata.date).toISOString().slice(0, 16) : '';
                 document.getElementById('description').value = metadata.description || '';
+                
+                // Handle podcast fields
+                const isPodcast = metadata.layout === 'podcast';
+                document.getElementById('isPodcast').checked = isPodcast;
+                document.getElementById('podcastFields').style.display = isPodcast ? 'block' : 'none';
+                
+                if (isPodcast) {
+                    document.getElementById('episodeNumber').value = metadata.episode_number || '';
+                    document.getElementById('duration').value = metadata.duration || '';
+                    document.getElementById('audioUrl').value = metadata.audio_url || '';
+                    ['episodeNumber', 'duration', 'audioUrl'].forEach(id => {
+                        document.getElementById(id).required = true;
+                    });
+                }
+
                 document.getElementById('editor').value = body;
                 preview.innerHTML = md.render(body);
 
@@ -652,12 +728,56 @@
             document.getElementById('backToEditorBtn').style.display = 'none';
             document.getElementById('viewPostsBtn').style.display = 'inline-block';
             document.getElementById('newPostBtn').style.display = 'inline-block';
+            document.getElementById('isPodcast').checked = false;
+            document.getElementById('podcastFields').style.display = 'none';
+            ['episodeNumber', 'duration', 'audioUrl'].forEach(id => {
+                const field = document.getElementById(id);
+                field.value = '';
+                field.required = false;
+            });
             preview.innerHTML = '';
             hasUnsavedChanges = false;
         }
 
+        // Handle podcast checkbox toggle and validation
+        document.getElementById('isPodcast').addEventListener('change', function() {
+            const podcastFields = document.getElementById('podcastFields');
+            podcastFields.style.display = this.checked ? 'block' : 'none';
+            
+            // Make podcast fields required when checkbox is checked
+            ['episodeNumber', 'duration', 'audioUrl'].forEach(id => {
+                const field = document.getElementById(id);
+                field.required = this.checked;
+                if (!this.checked) {
+                    field.value = ''; // Clear values when unchecked
+                }
+            });
+        });
+
+        // Validate duration format
+        document.getElementById('duration').addEventListener('input', function() {
+            const durationPattern = /^([0-9]{2}):([0-9]{2}):([0-9]{2})$/;
+            if (this.value && !durationPattern.test(this.value)) {
+                this.setCustomValidity('Please use format HH:MM:SS (e.g., 00:30:00)');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Validate audio URL
+        document.getElementById('audioUrl').addEventListener('input', function() {
+            try {
+                new URL(this.value);
+                this.setCustomValidity('');
+            } catch (e) {
+                if (this.value) {
+                    this.setCustomValidity('Please enter a valid URL');
+                }
+            }
+        });
+
         // Track changes in form inputs
-        ['title', 'author', 'datetime', 'description', 'editor'].forEach(id => {
+        ['title', 'author', 'datetime', 'description', 'editor', 'isPodcast', 'episodeNumber', 'duration', 'audioUrl'].forEach(id => {
             document.getElementById(id).addEventListener('input', () => {
                 hasUnsavedChanges = true;
             });
@@ -699,13 +819,21 @@
                     .map(checkbox => checkbox.value);
 
                 // Format the post in Jekyll format
+                const isPodcast = document.getElementById('isPodcast').checked;
+                const episodeNumber = document.getElementById('episodeNumber').value;
+                const duration = document.getElementById('duration').value;
+                const audioUrl = document.getElementById('audioUrl').value;
+
                 const post = `---
-layout: post
+layout: ${isPodcast ? 'podcast' : 'post'}
 title: "${title}"
 author: "${author}"
 date: ${date}
 description: "${description}"
 social_share: ${JSON.stringify(socialPlatforms)}
+${isPodcast ? `episode_number: ${episodeNumber}
+duration: "${duration}"
+audio_url: "${audioUrl}"` : ''}
 ---
 
 ${content}`;
