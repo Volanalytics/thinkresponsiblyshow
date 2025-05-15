@@ -270,32 +270,57 @@ ${content}`;
                 const fileName = `${date}-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.md`;
                 
                 // Create a new file in the _posts directory using GitHub API
-                const response = await fetch('https://api.github.com/repos/Volanalytics/thinkresponsiblyshow/contents/_posts/' + fileName, {
+                // First, try to get the repository details
+                const repoResponse = await fetch('https://api.github.com/repos/Volanalytics/thinkresponsiblyshow', {
+                    headers: {
+                        'Authorization': `token ${localStorage.getItem('github_token')}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (!repoResponse.ok) {
+                    const repoData = await repoResponse.json();
+                    throw new Error(`Repository access error: ${repoData.message}`);
+                }
+
+                // Create the post
+                const createResponse = await fetch('https://api.github.com/repos/Volanalytics/thinkresponsiblyshow/contents/_posts/' + fileName, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `token ${localStorage.getItem('github_token')}`,
+                        'Accept': 'application/vnd.github.v3+json',
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         message: `Add new post: ${title}`,
-                        content: btoa(post),
+                        content: btoa(unescape(encodeURIComponent(post))), // Handle UTF-8 content properly
                         branch: 'main'
                     })
                 });
 
-                const data = await response.json();
+                const data = await createResponse.json();
 
-                if (response.ok) {
+                if (createResponse.ok) {
                     showStatus(`Post published successfully! View it <a href="${data.content.html_url}" class="post-link" target="_blank">here</a>`, 'success');
                     document.getElementById('postForm').reset();
                     preview.innerHTML = '';
                     document.getElementById('date').valueAsDate = new Date();
                 } else {
-                    throw new Error(data.message || 'Failed to publish post');
+                    const errorMessage = data.message || 'Failed to publish post';
+                    console.error('API Response:', data);
+                    throw new Error(`GitHub API Error: ${errorMessage}. Please check your token has the 'repo' scope and try again.`);
                 }
             } catch (error) {
-                showStatus('Error publishing post: ' + error.message, 'error');
-                console.error('Publishing error:', error);
+                let errorMessage = error.message;
+                if (errorMessage.includes('401')) {
+                    errorMessage = 'Authentication failed. Please check your token and try logging in again.';
+                } else if (errorMessage.includes('403')) {
+                    errorMessage = 'Access denied. Please ensure your token has the "repo" scope.';
+                } else if (errorMessage.includes('404')) {
+                    errorMessage = 'Repository or path not found. Please check the repository exists and you have access.';
+                }
+                showStatus(errorMessage, 'error');
+                console.error('Full error details:', error);
             } finally {
                 publishButton.disabled = false;
                 publishButton.textContent = 'Publish Post';
