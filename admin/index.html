@@ -269,7 +269,7 @@
         });
 
         function showStatus(message, type) {
-            statusDiv.textContent = message;
+            statusDiv.innerHTML = message;
             statusDiv.className = type;
             statusDiv.style.display = 'block';
             if (type === 'success') {
