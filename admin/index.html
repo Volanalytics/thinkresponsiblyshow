@@ -284,7 +284,21 @@ ${content}`;
                 }
 
                 // Create the post
-                // Try to create the post directly
+                // First check if the file exists to get its SHA
+                const checkResponse = await fetch('https://api.github.com/repos/Volanalytics/thinkresponsiblyshow/contents/_posts/' + fileName, {
+                    headers: {
+                        'Authorization': `token ${localStorage.getItem('github_token')}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                let sha = '';
+                if (checkResponse.ok) {
+                    const fileData = await checkResponse.json();
+                    sha = fileData.sha;
+                }
+
+                // Create or update the post
                 const createResponse = await fetch('https://api.github.com/repos/Volanalytics/thinkresponsiblyshow/contents/_posts/' + fileName, {
                     method: 'PUT',
                     headers: {
@@ -293,9 +307,10 @@ ${content}`;
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        message: `Add new post: ${title}`,
+                        message: `${sha ? 'Update' : 'Add new'} post: ${title}`,
                         content: btoa(unescape(encodeURIComponent(post))), // Handle UTF-8 content properly
-                        branch: 'main'
+                        branch: 'main',
+                        ...(sha && { sha }) // Include SHA only if it exists
                     })
                 });
 
