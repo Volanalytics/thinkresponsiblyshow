@@ -385,6 +385,62 @@
                         <input type="checkbox" id="tiktok" name="social" value="tiktok">
                         <label for="tiktok">TikTok</label>
                     </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="youtube" name="social" value="youtube">
+                        <label for="youtube">YouTube</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="rumble" name="social" value="rumble">
+                        <label for="rumble">Rumble</label>
+                    </div>
+                </div>
+
+                <!-- Video Upload Section -->
+                <div id="videoSection" style="display: none;" class="form-section">
+                    <h3>Video Details</h3>
+                    <div class="form-group">
+                        <label for="videoFile">Video File</label>
+                        <input type="file" id="videoFile" name="videoFile" accept="video/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="videoTitle">Video Title</label>
+                        <input type="text" id="videoTitle" name="videoTitle">
+                    </div>
+                    <div class="form-group">
+                        <label for="videoDescription">Video Description</label>
+                        <textarea id="videoDescription" name="videoDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="videoTags">Tags (comma separated)</label>
+                        <input type="text" id="videoTags" name="videoTags" placeholder="tag1, tag2, tag3">
+                    </div>
+                    <div class="form-group">
+                        <label for="videoCategory">Category</label>
+                        <select id="videoCategory" name="videoCategory">
+                            <option value="Education">Education</option>
+                            <option value="News">News & Politics</option>
+                            <option value="Commentary">Commentary</option>
+                            <option value="Discussion">Discussion</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Privacy Settings</label>
+                        <div>
+                            <label for="youtubePrivacy">YouTube:</label>
+                            <select id="youtubePrivacy" name="youtubePrivacy">
+                                <option value="public">Public</option>
+                                <option value="unlisted">Unlisted</option>
+                                <option value="private">Private</option>
+                            </select>
+                        </div>
+                        <div class="mt-2">
+                            <label for="rumblePrivacy">Rumble:</label>
+                            <select id="rumblePrivacy" name="rumblePrivacy">
+                                <option value="public">Public</option>
+                                <option value="private">Private</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -409,8 +465,91 @@
         // Configuration
         const config = {
             webhookUrl: 'https://hooks.zapier.com/hooks/catch/22496116/27ha7ls/',
-            socialPlatforms: ['twitter', 'facebook', 'instagram', 'tiktok']
+            socialPlatforms: ['twitter', 'facebook', 'instagram', 'tiktok', 'youtube', 'rumble']
         };
+
+        // Handle video section visibility
+        const videoSection = document.getElementById('videoSection');
+        const youtubeCheckbox = document.getElementById('youtube');
+        const rumbleCheckbox = document.getElementById('rumble');
+
+        function updateVideoSection() {
+            const showVideo = youtubeCheckbox.checked || rumbleCheckbox.checked;
+            videoSection.style.display = showVideo ? 'block' : 'none';
+        }
+
+        youtubeCheckbox.addEventListener('change', updateVideoSection);
+        rumbleCheckbox.addEventListener('change', updateVideoSection);
+
+        // Handle video file upload
+        const videoFile = document.getElementById('videoFile');
+        let videoData = null;
+
+        videoFile.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                videoData = {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size
+                };
+            }
+        });
+
+        // Update form submission to include video data
+        document.getElementById('postForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const postData = {
+                title: formData.get('title'),
+                content: formData.get('content'),
+                social: Array.from(formData.getAll('social')),
+                date: formData.get('date'),
+                author: formData.get('author')
+            };
+
+            // Add video data if video section is visible
+            if (videoSection.style.display === 'block') {
+                postData.video = {
+                    title: formData.get('videoTitle'),
+                    description: formData.get('videoDescription'),
+                    tags: formData.get('videoTags').split(',').map(tag => tag.trim()),
+                    category: formData.get('videoCategory'),
+                    platforms: {
+                        youtube: youtubeCheckbox.checked ? {
+                            enabled: true,
+                            privacy: formData.get('youtubePrivacy')
+                        } : { enabled: false },
+                        rumble: rumbleCheckbox.checked ? {
+                            enabled: true,
+                            privacy: formData.get('rumblePrivacy')
+                        } : { enabled: false }
+                    },
+                    file: videoData
+                };
+            }
+
+            try {
+                const response = await fetch(config.webhookUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(postData),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                alert('Post published successfully!');
+                e.target.reset();
+                videoData = null;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error publishing post. Please try again.');
+            }
+        });
 
         // Check authentication
         if (!localStorage.getItem('github_token')) {
