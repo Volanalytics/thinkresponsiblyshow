@@ -8,7 +8,7 @@ image: "/images/uploads/sample-post-cover.jpg"
 social_share:
   - twitter
   - facebook
-  - linkedin
+  - instagram
 tags:
   - template
   - guide
