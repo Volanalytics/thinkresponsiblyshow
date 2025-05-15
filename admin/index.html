@@ -228,16 +228,17 @@
         // Function to trigger social media cross-posting
         async function triggerWebhook(postData) {
             try {
+                // Format data as URL-encoded form data to avoid CORS issues
+                const formData = new URLSearchParams();
+                formData.append('post', JSON.stringify(postData));
+                formData.append('platforms', JSON.stringify(
+                    Array.from(document.querySelectorAll('input[name="social"]:checked'))
+                        .map(checkbox => checkbox.value)
+                ));
+
                 const webhookResponse = await fetch(config.webhookUrl, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        post: postData,
-                        platforms: Array.from(document.querySelectorAll('input[name="social"]:checked'))
-                            .map(checkbox => checkbox.value)
-                    })
+                    body: formData
                 });
                 
                 if (webhookResponse.ok) {
