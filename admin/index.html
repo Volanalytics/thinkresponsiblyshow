@@ -284,20 +284,7 @@ ${content}`;
                 }
 
                 // Create the post
-                // Check organization access
-                console.log('Checking organization access...');
-                const orgResponse = await fetch('https://api.github.com/orgs/Volanalytics', {
-                    headers: {
-                        'Authorization': `token ${localStorage.getItem('github_token')}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (!orgResponse.ok) {
-                    throw new Error('Unable to access Volanalytics organization. Please ensure you are a member.');
-                }
-
-                // Try to create the post directly in the main repository
+                // Try to create the post directly
                 const createResponse = await fetch('https://api.github.com/repos/Volanalytics/thinkresponsiblyshow/contents/_posts/' + fileName, {
                     method: 'PUT',
                     headers: {
