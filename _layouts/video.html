@@ -7,7 +7,14 @@ layout: default
             <h1 class="section-title">{{ page.title }}</h1>
             <p class="meta">Posted on {{ page.date | date: "%B %d, %Y" }}</p>
             
+            {% assign request_path = page.url %}
             <div class="video-embed mb-8">
+                {% if page.video.platforms.youtube.enabled == false and page.video.platforms.rumble.enabled == false %}
+                <div class="text-center p-8 bg-gray-100 rounded-lg">
+                    <p class="text-gray-600">This video is currently being processed and will be available soon.</p>
+                </div>
+                {% endif %}
+                
                 {% if page.video.platforms.youtube.enabled %}
                 <div class="video-player aspect-w-16 aspect-h-9">
                     <iframe 
@@ -31,61 +38,131 @@ layout: default
                 </div>
                 {% endif %}
 
-                {% if page.video.platforms.youtube.enabled and page.video.platforms.rumble.enabled %}
-                <div class="text-center mt-4">
-                    <p class="text-sm text-gray-600">This video is available on both platforms for your convenience.</p>
+                {% if page.video.platforms.youtube.enabled or page.video.platforms.rumble.enabled %}
+                <div class="platform-links mt-4 flex justify-center gap-4">
+                    {% if page.video.platforms.youtube.enabled %}
+                    <a href="https://www.youtube.com/watch?v={{ page.video.platforms.youtube.video_id }}" 
+                       target="_blank"
+                       class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                       rel="noopener noreferrer">
+                        Watch on YouTube
+                    </a>
+                    {% endif %}
+                    
+                    {% if page.video.platforms.rumble.enabled %}
+                    <a href="https://rumble.com/v{{ page.video.platforms.rumble.video_id }}" 
+                       target="_blank"
+                       class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                       rel="noopener noreferrer">
+                        Watch on Rumble
+                    </a>
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>
 
-            <div class="video-info card mb-8 p-6">
+            <div class="video-info card mb-8 p-6 bg-white shadow-sm rounded-lg">
                 <h2 class="text-xl font-semibold mb-4">Video Information</h2>
-                <p class="mb-4">{{ page.video.description }}</p>
+                <p class="mb-4 text-gray-700">{{ page.video.description }}</p>
                 
-                {% if page.video.tags %}
-                <div class="video-tags">
-                    <h3 class="text-lg font-medium mb-2">Tags:</h3>
-                    <div class="flex flex-wrap gap-2">
-                        {% for tag in page.video.tags %}
-                        <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">{{ tag }}</span>
-                        {% endfor %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <h3 class="text-lg font-medium mb-2">Category</h3>
+                        <p class="text-gray-600">{{ page.video.category }}</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-medium mb-2">Author</h3>
+                        <p class="text-gray-600">{{ page.author }}</p>
                     </div>
                 </div>
-                {% endif %}
+
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <h3 class="text-lg font-medium mb-2">Published</h3>
+                            <p class="text-gray-600">{{ page.date | date: "%B %d, %Y" }}</p>
+                        </div>
+                    </div>
+
+                    {% if page.video.tags %}
+                    <div class="video-tags">
+                        <h3 class="text-lg font-medium mb-2">Tags</h3>
+                        <div class="flex flex-wrap gap-2">
+                            {% for tag in page.video.tags %}
+                            <span class="px-3 py-1 bg-gray-100 hover:bg-gray-200 transition-colors rounded-full text-sm text-gray-700">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            {% endif %}
             
             <div class="post-content">
                 {{ content }}
             </div>
 
-            <div class="social-share mt-8 mb-6">
-                <h3 class="text-xl mb-4">Share this video</h3>
-                <div class="flex gap-4">
+            <div class="social-share mt-8 mb-6 p-6 bg-gray-50 rounded-lg">
+                <h3 class="text-xl font-semibold mb-4">Share this video</h3>
+                <div class="flex flex-wrap gap-4">
                     <a href="https://twitter.com/intent/tweet?text={{ page.title | url_encode }}&url={{ site.url }}{{ site.baseurl }}{{ page.url | url_encode }}" 
                        target="_blank" 
-                       class="btn btn-secondary"
+                       class="inline-flex items-center px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
                        rel="noopener noreferrer">
                         Share on X
                     </a>
                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ site.baseurl }}{{ page.url | url_encode }}" 
                        target="_blank" 
-                       class="btn btn-secondary"
+                       class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                        rel="noopener noreferrer">
                         Share on Facebook
                     </a>
-                    <a href="https://www.instagram.com/hamerthinks" 
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ site.baseurl }}{{ page.url | url_encode }}&title={{ page.title | url_encode }}" 
                        target="_blank" 
-                       class="btn btn-secondary"
+                       class="inline-flex items-center px-6 py-3 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors"
                        rel="noopener noreferrer">
-                        Follow on Instagram
+                        Share on LinkedIn
                     </a>
                 </div>
+                <p class="text-sm text-gray-600 mt-4">Help spread the word by sharing this video with your network</p>
             </div>
             
-            <div class="post-navigation">
-                <a href="{{ site.baseurl }}/blog" class="btn">&larr; Back to All Articles</a>
+            <div class="post-navigation mt-8 mb-6 flex justify-between items-center">
+                <a href="{{ site.baseurl }}/blog" 
+                   class="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                    &larr; Back to All Articles
+                </a>
+                <a href="{{ site.baseurl }}/videos" 
+                   class="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                    View All Videos &rarr;
+                </a>
             </div>
+
+            {% if site.related_posts.size > 0 %}
+            <div class="related-videos mt-12 p-6 bg-gray-50 rounded-lg">
+                <h3 class="text-xl font-semibold mb-6">Related Videos</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for post in site.related_posts limit:3 %}
+                    {% if post.layout == 'video' %}
+                    <div class="video-card bg-white rounded-lg shadow-sm overflow-hidden">
+                        {% if post.video.platforms.youtube.thumbnail %}
+                        <img src="{{ post.video.platforms.youtube.thumbnail }}" 
+                             alt="{{ post.title }}" 
+                             class="w-full h-48 object-cover">
+                        {% endif %}
+                        <div class="p-4">
+                            <h4 class="font-medium text-lg mb-2">{{ post.title }}</h4>
+                            <p class="text-gray-600 text-sm mb-4">{{ post.description | truncate: 100 }}</p>
+                            <a href="{{ site.baseurl }}{{ post.url }}" 
+                               class="inline-block px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors">
+                                Watch Video
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
         </article>
     </div>
 </section>
