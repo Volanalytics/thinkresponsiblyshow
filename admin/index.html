@@ -284,29 +284,21 @@ ${content}`;
                 }
 
                 // Create the post
-                // Log the token's validity first
-                console.log('Checking repository access...');
-                const repoCheckResponse = await fetch('https://api.github.com/user/repos', {
+                // Check organization access
+                console.log('Checking organization access...');
+                const orgResponse = await fetch('https://api.github.com/orgs/Volanalytics', {
                     headers: {
                         'Authorization': `token ${localStorage.getItem('github_token')}`,
                         'Accept': 'application/vnd.github.v3+json'
                     }
                 });
-                
-                if (!repoCheckResponse.ok) {
-                    throw new Error('Unable to access GitHub. Please check your token.');
+
+                if (!orgResponse.ok) {
+                    throw new Error('Unable to access Volanalytics organization. Please ensure you are a member.');
                 }
 
-                const repos = await repoCheckResponse.json();
-                console.log('Available repositories:', repos.map(r => r.full_name));
-
-                // Create the post with the correct repository name from the list
-                const repoName = repos.find(r => r.name.toLowerCase() === 'thinkresponsiblyshow')?.full_name;
-                if (!repoName) {
-                    throw new Error('Repository not found in your account. Please check access permissions.');
-                }
-
-                const createResponse = await fetch(`https://api.github.com/repos/${repoName}/contents/_posts/${fileName}`, {
+                // Try to create the post directly in the main repository
+                const createResponse = await fetch('https://api.github.com/repos/Volanalytics/thinkresponsiblyshow/contents/_posts/' + fileName, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `token ${localStorage.getItem('github_token')}`,
@@ -337,11 +329,11 @@ ${content}`;
                 if (errorMessage.includes('401')) {
                     errorMessage = 'Authentication failed. Please check your token and try logging in again.';
                 } else if (errorMessage.includes('403')) {
-                    errorMessage = 'Access denied. Please ensure your token has the "repo" scope and you have write access to the repository.';
+                    errorMessage = 'Access denied. You need to be a member of the Volanalytics organization with write access. Please contact the organization admin.';
                 } else if (errorMessage.includes('404')) {
-                    errorMessage = 'Repository not found. Please fork the repository to your account first: https://github.com/Volanalytics/thinkresponsiblyshow';
-                } else if (errorMessage.includes('Repository not found in your account')) {
-                    errorMessage = 'Repository not found in your account. Please fork https://github.com/Volanalytics/thinkresponsiblyshow to your account first.';
+                    errorMessage = 'Repository not found. Please ensure you have the correct permissions in the Volanalytics organization.';
+                } else if (errorMessage.includes('Unable to access Volanalytics organization')) {
+                    errorMessage = 'You need to be a member of the Volanalytics organization to create posts. Please contact the organization admin for access.';
                 }
                 showStatus(errorMessage, 'error');
                 console.error('Full error details:', error);
