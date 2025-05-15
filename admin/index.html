@@ -189,6 +189,10 @@
                         <input type="checkbox" id="linkedin" name="social" value="linkedin">
                         <label for="linkedin">LinkedIn</label>
                     </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="tiktok" name="social" value="tiktok">
+                        <label for="tiktok">TikTok</label>
+                    </div>
                 </div>
             </div>
             
@@ -210,9 +214,43 @@
     </div>
 
     <script>
+        // Configuration
+        const config = {
+            webhookUrl: 'https://api.netlify.com/build_hooks/YOUR_BUILD_HOOK_ID', // Replace with actual webhook URL
+            socialPlatforms: ['twitter', 'facebook', 'linkedin', 'tiktok']
+        };
+
         // Check authentication
         if (!localStorage.getItem('github_token')) {
             window.location.href = 'auth.html';
+        }
+
+        // Function to trigger social media cross-posting
+        async function triggerWebhook(postData) {
+            try {
+                const webhookResponse = await fetch(config.webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        post: postData,
+                        platforms: Array.from(document.querySelectorAll('input[name="social"]:checked'))
+                            .map(checkbox => checkbox.value)
+                    })
+                });
+                
+                if (webhookResponse.ok) {
+                    console.log('Social media cross-posting initiated');
+                    return true;
+                } else {
+                    console.error('Failed to initiate social media cross-posting');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Social media cross-posting error:', error);
+                return false;
+            }
         }
 
         // Initialize markdown-it
@@ -317,7 +355,29 @@ ${content}`;
                 const data = await createResponse.json();
 
                 if (createResponse.ok) {
-                    showStatus(`Post published successfully! View it <a href="${data.content.html_url}" class="post-link" target="_blank">here</a>`, 'success');
+                    // Get selected social platforms
+                    const selectedPlatforms = Array.from(document.querySelectorAll('input[name="social"]:checked'))
+                        .map(checkbox => checkbox.value);
+
+                    let statusMessage = `Post published successfully! View it <a href="${data.content.html_url}" class="post-link" target="_blank">here</a>.`;
+
+                    // Only trigger webhook if social platforms are selected
+                    if (selectedPlatforms.length > 0) {
+                        const webhookSuccess = await triggerWebhook({
+                            title,
+                            description,
+                            url: data.content.html_url,
+                            platforms: selectedPlatforms
+                        });
+
+                        if (webhookSuccess) {
+                            statusMessage += ' Social media cross-posting has been initiated.';
+                        } else {
+                            statusMessage += ' Note: Social media cross-posting failed. Please check with the administrator.';
+                        }
+                    }
+
+                    showStatus(statusMessage, 'success');
                     document.getElementById('postForm').reset();
                     preview.innerHTML = '';
                     document.getElementById('date').valueAsDate = new Date();
