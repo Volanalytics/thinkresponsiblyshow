@@ -583,7 +583,7 @@ ${content}`;
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        message: `${sha ? 'Update' : 'Add new'} post: ${title}`,
+                        message: `${sha ? 'Update' : 'Add new'} post: ${title} by ${author}`,
                         content: btoa(unescape(encodeURIComponent(post))), // Handle UTF-8 content properly
                         branch: 'main',
                         ...(sha && { sha }) // Include SHA only if it exists
@@ -618,7 +618,7 @@ ${content}`;
                     showStatus(statusMessage, 'success');
                     document.getElementById('postForm').reset();
                     preview.innerHTML = '';
-                    document.getElementById('date').valueAsDate = new Date();
+                    document.getElementById('datetime').value = now.toISOString().slice(0, 16);
                 } else {
                     const errorMessage = data.message || 'Failed to publish post';
                     console.error('API Response:', data);
