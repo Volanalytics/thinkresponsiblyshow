@@ -14,6 +14,7 @@
 
     <title>Contact Us</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/thinkresponsiblyshow/css/design-system.css">
     <link rel="stylesheet" href="/thinkresponsiblyshow/css/style.css">
     <link rel="icon" href="/thinkresponsiblyshow/favicon.ico">
 </head>
@@ -34,25 +35,25 @@
     </header>
     
     <main>
-        <div class="contact-container">
-    <div class="contact-content">
-        <h1>Contact Us</h1>
-        <p class="contact-intro">Have questions, feedback, or want to get involved? We'd love to hear from you!</p>
+        <div class="container section">
+    <div class="card">
+        <h1 class="section-title">Contact Us</h1>
+        <p class="text-lg text-gray-600 mb-6">Have questions, feedback, or want to get involved? We'd love to hear from you!</p>
         
-        <form id="contact-form" class="contact-form">
+        <form id="contact-form" class="grid-1 gap-4">
             <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" name="name" class="form-input" required>
             </div>
 
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-input" required>
             </div>
 
             <div class="form-group">
-                <label for="subject">Subject</label>
-                <select id="subject" name="subject" required>
+                <label for="subject" class="form-label">Subject</label>
+                <select id="subject" name="subject" class="form-input" required>
                     <option value="">Select a subject</option>
                     <option value="general">General Inquiry</option>
                     <option value="feedback">Feedback</option>
@@ -63,187 +64,38 @@
             </div>
 
             <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
+                <label for="message" class="form-label">Message</label>
+                <textarea id="message" name="message" rows="5" class="form-input" required></textarea>
             </div>
 
-            <button type="submit" class="submit-button">Send Message</button>
+            <button type="submit" class="btn btn-primary">Send Message</button>
         </form>
 
-        <div class="contact-info">
-            <h2>Other Ways to Connect</h2>
-            <div class="connect-options">
-                <div class="connect-option">
-                    <h3>Social Media</h3>
-                    <p>Follow us and join the conversation:</p>
-                    <div class="social-links">
+        <div class="mt-8 pt-8 border-t border-gray-200">
+            <h2 class="text-2xl font-semibold mb-6">Other Ways to Connect</h2>
+            <div class="grid grid-2 gap-6">
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-4">Social Media</h3>
+                    <p class="mb-4">Follow us and join the conversation:</p>
+                    <div class="flex gap-4">
                         <a href="https://x.com/hamerthinks" target="_blank">X</a>
                         <a href="https://www.instagram.com/hamerthinks" target="_blank">Instagram</a>
                         <a href="https://www.facebook.com/hamerthinks" target="_blank">Facebook</a>
                     </div>
                 </div>
                 
-                <div class="connect-option">
-                    <h3>Newsletter</h3>
-                    <p>Stay updated with our latest content:</p>
-                    <form id="newsletter-form" class="newsletter-form">
-                        <input type="email" placeholder="Your email address" required>
-                        <button type="submit">Subscribe</button>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-4">Newsletter</h3>
+                    <p class="mb-4">Stay updated with our latest content:</p>
+                    <form id="newsletter-form" class="flex gap-2">
+                        <input type="email" class="form-input" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-secondary">Subscribe</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-.contact-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
-
-.contact-content {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.contact-intro {
-    color: #666;
-    margin-bottom: 2rem;
-    font-size: 1.1rem;
-    line-height: 1.5;
-}
-
-.contact-form {
-    margin-bottom: 3rem;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: #333;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: border-color 0.3s;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
-}
-
-.submit-button {
-    background: #2ea44f;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.submit-button:hover {
-    background: #2c974b;
-}
-
-.contact-info {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid #eee;
-}
-
-.connect-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-top: 1.5rem;
-}
-
-.connect-option h3 {
-    color: #333;
-    margin-bottom: 1rem;
-}
-
-.social-links {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.social-links a {
-    color: #666;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.social-links a:hover {
-    color: #6366f1;
-}
-
-.newsletter-form {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
-.newsletter-form input {
-    flex: 1;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
-.newsletter-form button {
-    background: #6366f1;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.newsletter-form button:hover {
-    background: #4f46e5;
-}
-
-@media (max-width: 768px) {
-    .connect-options {
-        grid-template-columns: 1fr;
-    }
-
-    .newsletter-form {
-        flex-direction: column;
-    }
-
-    .newsletter-form button {
-        width: 100%;
-        margin-top: 0.5rem;
-    }
-}
-</style>
 
 <script>
 document.getElementById('contact-form').addEventListener('submit', async function(e) {
