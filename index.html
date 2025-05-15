@@ -241,23 +241,34 @@
     
     <script src="/thinkresponsiblyshow/js/script.js"></script>
     
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Footer Email Form
-        const footerEmailForm = document.getElementById('footer-email-form');
-        if (footerEmailForm) {
-            footerEmailForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const email = document.getElementById('footer-email').value;
-                // Replace with actual email subscription service
-                alert(`Thank you for subscribing, ${email}!`);
-                footerEmailForm.reset();
-            });
-        }
-    });
-    </script>
+    <script src="/thinkresponsiblyshow/js/newsletter.js"></script>
     
     <style>
+    .newsletter-message {
+        margin-top: 10px;
+        padding: 8px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        text-align: left;
+    }
+
+    .newsletter-message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .newsletter-message.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    button[type="submit"]:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
     /* Footer Styles */
     footer {
         background: var(--primary-dark);
