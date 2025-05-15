@@ -49,12 +49,19 @@ Check out the sample post template at `_posts/2024-01-01-sample-post-template.md
 - Social media optimization tips
 - Best practices
 
+## Documentation
+
+- [Setup Guide](SETUP.md) - Complete setup instructions
+- [Image Guide](docs/IMAGE_GUIDE.md) - Image handling and best practices
+- [Hosting Analysis](docs/HOSTING_COMPARISON.md) - Hosting options and considerations
+
 ## Support
 
 For technical support or questions:
-1. Check the [SETUP.md](SETUP.md) troubleshooting section
-2. Create an issue in the GitHub repository
-3. Contact the development team
+1. Check the documentation listed above
+2. Review the [SETUP.md](SETUP.md) troubleshooting section
+3. Create an issue in the GitHub repository
+4. Contact the development team
 
 ## License
 
