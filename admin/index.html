@@ -163,13 +163,20 @@
             gap: 8px;
         }
 
-        .podcast-badge {
-            background: #6366f1;
-            color: white;
+        .podcast-badge, .newsletter-badge {
             padding: 2px 8px;
             border-radius: 12px;
             font-size: 12px;
             font-weight: 500;
+            color: white;
+        }
+
+        .podcast-badge {
+            background: #6366f1;
+        }
+
+        .newsletter-badge {
+            background: #0ea5e9;
         }
 
         #podcastFields {
@@ -301,6 +308,10 @@
                     <input type="checkbox" id="isPodcast" name="isPodcast">
                     <label for="isPodcast">This is a podcast episode</label>
                 </div>
+                <div class="checkbox-group" style="margin-top: 10px;">
+                    <input type="checkbox" id="isNewsletter" name="isNewsletter">
+                    <label for="isNewsletter">Send as newsletter</label>
+                </div>
             </div>
 
             <div id="podcastFields" style="display: none;">
@@ -317,6 +328,33 @@
                 <div class="form-group">
                     <label for="audioUrl">Audio URL:</label>
                     <input type="url" id="audioUrl" placeholder="https://example.com/podcast.mp3">
+                </div>
+            </div>
+
+            <div id="newsletterFields" style="display: none;">
+                <div class="form-group">
+                    <label for="newsletterSubject">Email Subject Line:</label>
+                    <input type="text" id="newsletterSubject" placeholder="Enter email subject">
+                </div>
+                
+                <div class="form-group">
+                    <label for="newsletterPreview">Preview Text:</label>
+                    <textarea id="newsletterPreview" rows="2" placeholder="Brief preview text that appears in email clients"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="sendTime">Send Time:</label>
+                    <select id="sendTime">
+                        <option value="now">Send Immediately</option>
+                        <option value="schedule">Schedule for Later</option>
+                    </select>
+                </div>
+
+                <div id="scheduleFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="scheduledDateTime">Scheduled Date & Time:</label>
+                        <input type="datetime-local" id="scheduledDateTime">
+                    </div>
                 </div>
             </div>
             
@@ -536,11 +574,16 @@
                             <h3>
                                 ${metadata.title || 'Untitled'}
                                 ${metadata.layout === 'podcast' ? '<span class="podcast-badge">Podcast</span>' : ''}
+                                ${metadata.layout === 'newsletter' ? '<span class="newsletter-badge">Newsletter</span>' : ''}
                             </h3>
                             <p>Author: ${metadata.author || 'Unknown'}</p>
                             <p>Date: ${metadata.date ? new Date(metadata.date).toLocaleString() : 'No date'}</p>
                             ${metadata.layout === 'podcast' ? `
                             <p>Episode ${metadata.episode_number || 'N/A'} • ${metadata.duration || '00:00:00'}</p>
+                            ` : ''}
+                            ${metadata.layout === 'newsletter' ? `
+                            <p>Subject: ${metadata.newsletter_subject || 'No subject'}</p>
+                            ${metadata.send_time !== 'immediate' ? `<p>Scheduled: ${new Date(metadata.send_time).toLocaleString()}</p>` : '<p>Send immediately</p>'}
                             ` : ''}
                             <div class="actions">
                                 <button onclick="editPost('${post.path}')" class="edit-button">Edit</button>
@@ -728,6 +771,7 @@
             document.getElementById('backToEditorBtn').style.display = 'none';
             document.getElementById('viewPostsBtn').style.display = 'inline-block';
             document.getElementById('newPostBtn').style.display = 'inline-block';
+            // Reset podcast fields
             document.getElementById('isPodcast').checked = false;
             document.getElementById('podcastFields').style.display = 'none';
             ['episodeNumber', 'duration', 'audioUrl'].forEach(id => {
@@ -735,6 +779,18 @@
                 field.value = '';
                 field.required = false;
             });
+
+            // Reset newsletter fields
+            document.getElementById('isNewsletter').checked = false;
+            document.getElementById('newsletterFields').style.display = 'none';
+            document.getElementById('scheduleFields').style.display = 'none';
+            ['newsletterSubject', 'newsletterPreview', 'scheduledDateTime'].forEach(id => {
+                const field = document.getElementById(id);
+                field.value = '';
+                field.required = false;
+            });
+            document.getElementById('sendTime').value = 'now';
+
             preview.innerHTML = '';
             hasUnsavedChanges = false;
         }
@@ -752,6 +808,61 @@
                     field.value = ''; // Clear values when unchecked
                 }
             });
+
+            // Uncheck newsletter if podcast is checked
+            if (this.checked) {
+                document.getElementById('isNewsletter').checked = false;
+                document.getElementById('newsletterFields').style.display = 'none';
+                ['newsletterSubject', 'newsletterPreview', 'scheduledDateTime'].forEach(id => {
+                    const field = document.getElementById(id);
+                    field.required = false;
+                    field.value = '';
+                });
+            }
+        });
+
+        // Handle newsletter checkbox toggle and validation
+        document.getElementById('isNewsletter').addEventListener('change', function() {
+            const newsletterFields = document.getElementById('newsletterFields');
+            newsletterFields.style.display = this.checked ? 'block' : 'none';
+            
+            // Make newsletter fields required when checkbox is checked
+            ['newsletterSubject', 'newsletterPreview'].forEach(id => {
+                const field = document.getElementById(id);
+                field.required = this.checked;
+                if (!this.checked) {
+                    field.value = '';
+                }
+            });
+
+            // Uncheck podcast if newsletter is checked
+            if (this.checked) {
+                document.getElementById('isPodcast').checked = false;
+                document.getElementById('podcastFields').style.display = 'none';
+                ['episodeNumber', 'duration', 'audioUrl'].forEach(id => {
+                    const field = document.getElementById(id);
+                    field.required = false;
+                    field.value = '';
+                });
+            }
+        });
+
+        // Handle send time selection for newsletter
+        document.getElementById('sendTime').addEventListener('change', function() {
+            const scheduleFields = document.getElementById('scheduleFields');
+            const scheduledDateTime = document.getElementById('scheduledDateTime');
+            
+            scheduleFields.style.display = this.value === 'schedule' ? 'block' : 'none';
+            scheduledDateTime.required = this.value === 'schedule';
+            
+            if (this.value === 'schedule') {
+                // Set default scheduled time to tomorrow at current time
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                scheduledDateTime.value = tomorrow.toISOString().slice(0, 16);
+            } else {
+                scheduledDateTime.value = '';
+            }
         });
 
         // Validate duration format
@@ -820,12 +931,17 @@
 
                 // Format the post in Jekyll format
                 const isPodcast = document.getElementById('isPodcast').checked;
+                const isNewsletter = document.getElementById('isNewsletter').checked;
                 const episodeNumber = document.getElementById('episodeNumber').value;
                 const duration = document.getElementById('duration').value;
                 const audioUrl = document.getElementById('audioUrl').value;
+                const newsletterSubject = document.getElementById('newsletterSubject').value;
+                const newsletterPreview = document.getElementById('newsletterPreview').value;
+                const sendTime = document.getElementById('sendTime').value;
+                const scheduledDateTime = document.getElementById('scheduledDateTime').value;
 
                 const post = `---
-layout: ${isPodcast ? 'podcast' : 'post'}
+layout: ${isPodcast ? 'podcast' : isNewsletter ? 'newsletter' : 'post'}
 title: "${title}"
 author: "${author}"
 date: ${date}
@@ -834,6 +950,9 @@ social_share: ${JSON.stringify(socialPlatforms)}
 ${isPodcast ? `episode_number: ${episodeNumber}
 duration: "${duration}"
 audio_url: "${audioUrl}"` : ''}
+${isNewsletter ? `newsletter_subject: "${newsletterSubject}"
+newsletter_preview: "${newsletterPreview}"
+send_time: "${sendTime === 'schedule' ? scheduledDateTime : 'immediate'}"` : ''}
 ---
 
 ${content}`;
