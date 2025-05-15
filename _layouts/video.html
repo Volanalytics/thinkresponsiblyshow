@@ -7,17 +7,35 @@ layout: default
             <h1 class="section-title">{{ page.title }}</h1>
             <p class="meta">Posted on {{ page.date | date: "%B %d, %Y" }}</p>
             
-            {% if page.video.youtube_id %}
             <div class="video-embed mb-8">
+                {% if page.video.platforms.youtube.enabled %}
                 <div class="video-player aspect-w-16 aspect-h-9">
                     <iframe 
                         class="w-full h-full"
-                        src="https://www.youtube.com/embed/{{ page.video.youtube_id }}" 
+                        src="https://www.youtube.com/embed/{{ page.video.platforms.youtube.video_id }}" 
                         frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
                     </iframe>
                 </div>
+                {% endif %}
+
+                {% if page.video.platforms.rumble.enabled %}
+                <div class="video-player aspect-w-16 aspect-h-9 {% if page.video.platforms.youtube.enabled %}mt-4{% endif %}">
+                    <iframe 
+                        class="w-full h-full"
+                        src="https://rumble.com/embed/{{ page.video.platforms.rumble.video_id }}" 
+                        frameborder="0" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                {% endif %}
+
+                {% if page.video.platforms.youtube.enabled and page.video.platforms.rumble.enabled %}
+                <div class="text-center mt-4">
+                    <p class="text-sm text-gray-600">This video is available on both platforms for your convenience.</p>
+                </div>
+                {% endif %}
             </div>
 
             <div class="video-info card mb-8 p-6">

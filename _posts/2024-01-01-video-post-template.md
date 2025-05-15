@@ -12,12 +12,13 @@ video:
   category: "Education"
   platforms:
     youtube:
-      enabled: true
-      privacy: "public"  # public, unlisted, private
+      enabled: false
+      video_id: ""  # Will be populated automatically after upload
+      thumbnail: ""  # Will be populated from YouTube
     rumble:
-      enabled: true
-      privacy: "public"
-  file: "/videos/your-video.mp4"  # Local path to video file
+      enabled: false
+      video_id: ""  # Will be populated automatically after upload
+      thumbnail: ""  # Will be populated from Rumble
 social_share:
   - twitter
   - facebook
